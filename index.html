@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Life Dashboard</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="theme-color" content="#2563eb">
+<style>
+*{box-sizing:border-box} body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:#f6f8fb;color:#0f172a}
+header{padding:20px 16px 4px} h1{margin:0;font-size:26px} .sub{color:#64748b;font-size:13px;margin-top:4px}
+main{padding:12px 16px 40px;max-width:900px;margin:0 auto}
+.grid{display:flex;flex-wrap:wrap;gap:12px}
+.card{background:#fff;border-radius:16px;box-shadow:0 1px 3px rgba(15,23,42,.08);padding:16px;flex:1 1 100%}
+.stat{flex:1 1 40%} .stat .v{font-size:26px;font-weight:800;color:#1d4ed8} .stat .l{font-size:12px;color:#64748b;text-transform:uppercase;letter-spacing:.5px}
+h2{font-size:16px;margin:0 0 10px} h3{font-size:14px;margin:14px 0 6px}
+.row{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid #eef2f7;font-size:14px} .row:last-child{border-bottom:0}
+.mut{color:#64748b;font-size:12px} .flag{color:#b91c1c;font-weight:700}
+input,select{font-size:15px;padding:9px 10px;border:1px solid #cbd5e1;border-radius:10px;width:100%;margin:4px 0}
+button{background:#2563eb;color:#fff;border:0;border-radius:10px;padding:10px 16px;font-size:15px;font-weight:600} button.sec{background:#e2e8f0;color:#0f172a}
+.del{color:#b91c1c;background:none;padding:2px 6px;font-size:13px}
+a{color:#2563eb;text-decoration:none;font-weight:600}
+table{width:100%;border-collapse:collapse;font-size:13px} th{text-align:left;color:#64748b;font-size:11px;text-transform:uppercase} td,th{padding:5px 4px;border-bottom:1px solid #eef2f7}
+.note{background:#eff6ff;border:1px solid #bfdbfe;border-radius:10px;padding:10px 12px;font-size:13px;margin-top:10px}
+@media(min-width:700px){.stat{flex:1 1 20%}.half{flex:1 1 45%}}
+</style>
+</head>
+<body>
+<header><h1>Life Dashboard</h1><div class="sub" id="today"></div><div class="sub">Data snapshot: October 24, 2026 unless noted. Logs below save on this phone.</div></header>
+<main>
+<div class="grid">
+<div class="card stat"><div class="v">Mon 6:45a</div><div class="l">Next padel · Juan vs Blake, Pietro</div></div>
+<div class="card stat"><div class="v">6h 55m</div><div class="l">Last sleep · 81.2% efficiency</div></div>
+<div class="card stat"><div class="v">~47 bpm</div><div class="l">Avg heart rate · Oct 18–24</div></div>
+<div class="card stat"><div class="v">11 days</div><div class="l">Grand Cayman · Nov 4–6</div></div>
+</div>
+
+<div class="grid" style="margin-top:12px">
+<div class="card half"><h2>This week</h2>
+<div class="row"><span>Mon Oct 26 · 6:45a</span><span>Padel: Juan vs Blake, Pietro</span></div>
+<div class="row"><span>Mon Oct 26 · 1:00p</span><span>Padel: Griff vs Russ, Anders</span></div>
+<div class="row"><span>Mon Oct 26 · 6:15p</span><span>Sant Ambroeus dinner</span></div>
+<div class="row"><span>Tue Oct 27 · 1:00p</span><span>Padel training</span></div>
+<div class="row"><span>Tue Oct 27 · 6:30p</span><span>Padel: Juan vs Dave H, Nico</span></div>
+<div class="row"><span>Wed Oct 28 · 7:00a</span><span>Padel: Juan vs TBD</span></div>
+<div class="row"><span>Wed Oct 28 · 1:00p</span><span>Padel: TBD</span></div>
+<div class="row"><span>Thu Oct 29 · 1:00p</span><span>Padel: Griff vs Robbie, Miles</span></div>
+<div class="row"><span>Fri Oct 30 · 1:00p</span><span>Padel: Griff vs Russ, Miles</span></div>
+<div class="row"><span>Fri Oct 30 · 6:00p</span><span>Cafe Boulud</span></div>
+<div class="row"><span>Sat Oct 31</span><span>Halloween · Beginners (Big Book) NYC 10:30a</span></div>
+</div>
+
+<div class="card half"><h2>Padel</h2>
+<div class="row"><span>Next</span><span>Mon 6:45a · Juan vs Blake, Pietro</span></div>
+<div class="row"><span>Last result</span><span>W 7-6, 7-5, 6-3 vs Russ, Steve (Oct 23)</span></div>
+<div style="margin-top:10px"><a href="https://dyacobs-tech.github.io/padel-log/">Open Padel Log →</a></div>
+<h3>Sick day counter</h3>
+<div id="sickTotals" class="mut"></div>
+<div style="display:flex;gap:8px;margin-top:8px"><input type="date" id="sickDate"><input type="text" id="sickNote" placeholder="Note (optional)"></div>
+<button onclick="addSick()" style="margin-top:8px">Log a sick day</button>
+<div id="sickList" style="margin-top:8px"></div>
+</div>
+</div>
+
+<div class="grid" style="margin-top:12px">
+<div class="card half"><h2>Health &amp; Sleep</h2><div class="mut">Apple Health nights. RHR &amp; HRV: <b>Not synced yet</b> — no rows in synced Health data. Wear the Apple Watch overnight or enable Eight Sleep's Health sharing. Eight Sleep direct read in progress.</div>
+<table style="margin-top:8px"><tr><th>Night</th><th>Asleep</th><th>Eff.</th><th>Quality</th></tr>
+<tr><td>Oct 16→17</td><td>7h01m</td><td>84.1%</td><td>82</td></tr>
+<tr><td>Oct 17→18</td><td>8h42m</td><td>80.5%</td><td>82</td></tr>
+<tr><td>Oct 18→19</td><td>6h57m</td><td>90.4%</td><td>70</td></tr>
+<tr><td>Oct 19→20</td><td>7h39m</td><td>83.4%</td><td>81</td></tr>
+<tr><td>Oct 20→21</td><td>5h32m</td><td>64.8%</td><td class="flag">30 · deep 20m</td></tr>
+<tr><td>Oct 22→23</td><td>7h23m</td><td>77.9%</td><td>82</td></tr>
+<tr><td>Oct 23→24</td><td>6h55m</td><td>81.2%</td><td>58</td></tr></table>
+<div class="mut" style="margin-top:8px">Daily Oct 18–24: heart rate avg 45–49 bpm · respiratory ~17/min · steps 3,890–15,188.</div>
+</div>
+
+<div class="card half"><h2>Golf</h2>
+<div class="row"><span>Handicap</span><span><b>4.3</b> (low 2.4)</span></div>
+<div class="row"><span>GHIN</span><span>6957117 · PBCC, Back tees play as 5</span></div>
+<div class="mut">GHIN live sync in progress (browser read running). Log rounds here meanwhile.</div>
+<div style="display:flex;gap:8px;margin-top:8px"><input type="date" id="gDate"><input type="text" id="gCourse" placeholder="Course"><input type="number" id="gScore" placeholder="Score"></div>
+<button onclick="addRound()" style="margin-top:8px">Log round</button>
+<div id="golfList" style="margin-top:8px"></div>
+</div>
+</div>
+
+<div class="grid" style="margin-top:12px">
+<div class="card half"><h2>Watch hub</h2>
+<div class="mut">To watch · 39 titles in Movies to Watch. Letterboxd sync in progress (secure sign-in pending).</div>
+<h3>Newest to watch</h3>
+<div class="row"><span>War</span><span>HBO/Max</span></div>
+<div class="row"><span>The Rainmaker</span><span>Prime Video</span></div>
+<div class="row"><span>Star City</span><span>Apple TV+</span></div>
+<h3>Log watched</h3>
+<div style="display:flex;gap:8px"><input type="text" id="wTitle" placeholder="Title"><input type="text" id="wRate" placeholder="★ 1–5"></div>
+<button onclick="addWatched()" style="margin-top:8px">Mark watched</button>
+<div id="watchedList" style="margin-top:8px"></div>
+</div>
+
+<div class="card half"><h2>Money watch</h2>
+<div class="row"><span>Viture refund</span><span>$563.39 · watch ~Oct 30</span></div>
+<div class="row"><span>WSJ renewal</span><span>Decide before Oct 27</span></div>
+<div class="row"><span>KREA renewal</span><span>Oct 2027</span></div>
+<div class="row"><span>Canaries</span><span>10Y · HYG · Oracle CDS · IG spreads</span></div>
+<div class="mut" style="margin-top:8px">No live prices in v1 — canaries listed by name only.</div>
+<h3>Lists &amp; projects</h3>
+<div class="row"><span>Recipes</span><span>242 master list</span></div>
+<div class="row"><span>Coloring book</span><span>KDP · ages 4–8 · $7.99 · pen name open</span></div>
+<div class="row"><span>Marbella</span><span>Aug 2027 family trip planning</span></div>
+</div>
+</div>
+
+<div class="grid" style="margin-top:12px">
+<div class="card"><h2>Home · SmartThings + Pool</h2><div class="mut">Snapshot Oct 24, 2026 ~5:45pm. All thermostats online, mode cool, fan auto. Lutron lights are NOT in SmartThings (bridge offline) — ask Luna for lights.</div>
+<div class="row"><span>Master Bedroom</span><span>70°F · 50% · set 73°</span></div>
+<div class="row"><span>Living Room</span><span>72°F · 41% · set 74°</span></div>
+<div class="row"><span>Kitchen</span><span>76°F · 46% · set 76°</span></div>
+<div class="row"><span>Media Room</span><span>75°F · 46% · set 75°</span></div>
+<div class="row"><span>Playroom</span><span>75°F · 47% · set 75°</span></div>
+<div class="row"><span>Helene's Bedroom</span><span>71°F · 51% · set 71°</span></div>
+<div class="row"><span>Louis Bedroom</span><span>70°F · 53% · set 70°</span></div>
+<div class="row"><span>Pool</span><span>91°F · pump on · heater on · air 83°F</span></div>
+<div class="note">Live controls aren't in this page — thermostat changes go through Luna for now. Tell Luna a room + temperature and she'll set it.</div>
+</div>
+</div>
+</main>
+<script>
+document.getElementById('today').textContent = new Date().toLocaleDateString(undefined,{weekday:'long',month:'long',day:'numeric',year:'numeric'});
+function load(k){try{return JSON.parse(localStorage.getItem(k))||[]}catch(e){return[]}}
+function save(k,v){localStorage.setItem(k,JSON.stringify(v))}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;')}
+function renderSick(){var l=load('ld_sick');var y=l.filter(x=>x.date.indexOf('2026')===0);var last=l.length?l[l.length-1].date:'—';document.getElementById('sickTotals').textContent='Total: '+l.length+' · In 2026: '+y.length+' · Last sick day: '+last;document.getElementById('sickList').innerHTML=l.map((x,i)=>'<div class="row"><span>'+esc(x.date)+(x.note?' · '+esc(x.note):'')+'</span><button class="del" onclick="delSick('+i+')">Delete</button></div>').join('')||'<div class="mut">No sick days logged yet.</div>'}
+function addSick(){var d=document.getElementById('sickDate').value||new Date().toISOString().slice(0,10);var n=document.getElementById('sickNote').value;var l=load('ld_sick');l.push({date:d,note:n});l.sort((a,b)=>a.date<b.date?1:-1);save('ld_sick',l);document.getElementById('sickNote').value='';renderSick()}
+function delSick(i){var l=load('ld_sick');l.splice(i,1);save('ld_sick',l);renderSick()}
+function renderGolf(){var l=load('ld_golf');document.getElementById('golfList').innerHTML=l.map((x,i)=>'<div class="row"><span>'+esc(x.date)+' · '+esc(x.course)+' · '+esc(x.score)+'</span><button class="del" onclick="delGolf('+i+')">Delete</button></div>').join('')||'<div class="mut">No rounds logged yet.</div>'}
+function addRound(){var d=document.getElementById('gDate').value||new Date().toISOString().slice(0,10);var c=document.getElementById('gCourse').value||'—';var s=document.getElementById('gScore').value||'';if(!s)return;var l=load('ld_golf');l.push({date:d,course:c,score:s});l.sort((a,b)=>a.date<b.date?1:-1);save('ld_golf',l);renderGolf()}
+function delGolf(i){var l=load('ld_golf');l.splice(i,1);save('ld_golf',l);renderGolf()}
+function renderWatched(){var l=load('ld_watched');document.getElementById('watchedList').innerHTML=l.map((x,i)=>'<div class="row"><span>'+esc(x.title)+(x.rating?' · '+esc(x.rating):'')+'</span><button class="del" onclick="delWatched('+i+')">Delete</button></div>').join('')||'<div class="mut">Nothing marked watched yet.</div>'}
+function addWatched(){var t=document.getElementById('wTitle').value;if(!t)return;var r=document.getElementById('wRate').value;var l=load('ld_watched');l.push({title:t,rating:r});save('ld_watched',l);document.getElementById('wTitle').value='';document.getElementById('wRate').value='';renderWatched()}
+function delWatched(i){var l=load('ld_watched');l.splice(i,1);save('ld_watched',l);renderWatched()}
+document.getElementById('sickDate').value=new Date().toISOString().slice(0,10);
+document.getElementById('gDate').value=new Date().toISOString().slice(0,10);
+renderSick();renderGolf();renderWatched();
+if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js')}
+</script>
+</body>
+</html>
