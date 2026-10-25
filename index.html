@@ -6,38 +6,64 @@
 <title>Life Dashboard</title>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icon-192.png">
-<meta name="theme-color" content="#2563eb">
+<meta name="theme-color" content="#0a0a0a">
 <style>
-*{box-sizing:border-box} body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:#f6f8fb;color:#0f172a}
-header{padding:20px 16px 4px} h1{margin:0;font-size:26px} .sub{color:#64748b;font-size:13px;margin-top:4px}
-main{padding:12px 16px 40px;max-width:900px;margin:0 auto}
-.grid{display:flex;flex-wrap:wrap;gap:12px}
-.card{background:#fff;border-radius:16px;box-shadow:0 1px 3px rgba(15,23,42,.08);padding:16px;flex:1 1 100%}
-.stat{flex:1 1 40%} .stat .v{font-size:26px;font-weight:800;color:#1d4ed8} .stat .l{font-size:12px;color:#64748b;text-transform:uppercase;letter-spacing:.5px}
-h2{font-size:16px;margin:0 0 10px} h3{font-size:14px;margin:14px 0 6px}
-.row{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid #eef2f7;font-size:14px} .row:last-child{border-bottom:0}
-.mut{color:#64748b;font-size:12px} .flag{color:#b91c1c;font-weight:700}
-input,select{font-size:15px;padding:9px 10px;border:1px solid #cbd5e1;border-radius:10px;width:100%;margin:4px 0}
-button{background:#2563eb;color:#fff;border:0;border-radius:10px;padding:10px 16px;font-size:15px;font-weight:600} button.sec{background:#e2e8f0;color:#0f172a}
-.del{color:#b91c1c;background:none;padding:2px 6px;font-size:13px}
-a{color:#2563eb;text-decoration:none;font-weight:600}
-table{width:100%;border-collapse:collapse;font-size:13px} th{text-align:left;color:#64748b;font-size:11px;text-transform:uppercase} td,th{padding:5px 4px;border-bottom:1px solid #eef2f7}
-.note{background:#eff6ff;border:1px solid #bfdbfe;border-radius:10px;padding:10px 12px;font-size:13px;margin-top:10px}
-@media(min-width:700px){.stat{flex:1 1 20%}.half{flex:1 1 45%}}
+*{box-sizing:border-box} body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:#0a0a0a;color:#f4f4f4}
+#rail{position:fixed;left:0;top:0;bottom:0;width:212px;background:#0e0e0e;border-right:1px solid #232323;padding:22px 12px;display:flex;flex-direction:column;gap:2px;z-index:10;overflow-y:auto}
+.brand{font-size:15px;font-weight:800;letter-spacing:3px;padding:0 12px 18px} .brand i{color:#ff6b1a;font-style:normal}
+#rail a{display:flex;align-items:center;gap:12px;color:#a1a1a1;text-decoration:none;font-size:14px;font-weight:600;padding:11px 12px;border-radius:9px}
+#rail a svg{width:20px;height:20px;flex:none;stroke:currentColor;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+#rail a.active{color:#fff;background:#1c1c1c;box-shadow:inset 3px 0 0 #ff6b1a}
+#rail a:hover{color:#fff}
+main{margin-left:212px;padding:28px;max-width:880px}
+header{padding:4px 0 20px} h1{margin:0;font-size:28px;letter-spacing:-.5px} .sub{color:#a1a1a1;font-size:13px;margin-top:6px}
+.sec{display:none} .sec.active{display:block}
+.card{background:#141414;border:1px solid #232323;border-radius:12px;padding:18px;margin-bottom:14px}
+.grid{display:flex;flex-wrap:wrap;gap:12px} .grid .card{flex:1 1 100%} .stat{flex:1 1 40%} .stat .v{font-size:28px;font-weight:800} .stat .l{font-size:11px;color:#ff6b1a;text-transform:uppercase;letter-spacing:1px;margin-top:4px}
+h2{font-size:16px;margin:0 0 12px;letter-spacing:.2px} h3{font-size:13px;margin:16px 0 6px;color:#a1a1a1;text-transform:uppercase;letter-spacing:1px}
+.row{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px solid #232323;font-size:14px} .row:last-child{border-bottom:0}
+.mut{color:#a1a1a1;font-size:12.5px;line-height:1.5} .flag{color:#ff5c5c;font-weight:700}
+input{font-size:15px;padding:10px;border:1px solid #2a2a2a;border-radius:9px;width:100%;margin:4px 0;background:#1c1c1c;color:#fff}
+button{background:#ff6b1a;color:#0a0a0a;border:0;border-radius:9px;padding:11px 18px;font-size:15px;font-weight:700} button.del{color:#ff5c5c;background:none;padding:2px 6px;font-size:13px}
+a{color:#ff6b1a;text-decoration:none;font-weight:600}
+table{width:100%;border-collapse:collapse;font-size:13px} th{text-align:left;color:#a1a1a1;font-size:11px;text-transform:uppercase;letter-spacing:.5px} td,th{padding:6px 4px;border-bottom:1px solid #232323}
+.note{background:#1c1c1c;border:1px solid #2a2a2a;border-left:3px solid #ff6b1a;border-radius:9px;padding:11px 13px;font-size:13px;margin-top:12px;color:#d4d4d4}
+@media(max-width:700px){#rail{width:64px;padding:18px 8px} #rail a span{display:none} #rail a{justify-content:center;padding:12px 0} .brand span{display:none} .brand{text-align:center;padding:0 0 14px} main{margin-left:64px;padding:20px 14px} .stat{flex:1 1 40%}}
 </style>
 </head>
 <body>
-<header><h1>Life Dashboard</h1><div class="sub" id="today"></div><div class="sub">Data snapshot: October 24, 2026 unless noted. Logs below save on this phone.</div></header>
+<nav id="rail">
+<div class="brand"><span>LIFE</span><i>●</i></div>
+<a href="#overview" data-sec="overview" class="active"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><span>Overview</span></a>
+<a href="#week" data-sec="week"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg><span>Week</span></a>
+<a href="#dinners" data-sec="dinners"><svg viewBox="0 0 24 24"><path d="M6 3v6a6 6 0 0 0 12 0V3M9 3v4M15 3v4M12 15v6M8 21h8"/></svg><span>Dinners</span></a>
+<a href="#padel" data-sec="padel"><svg viewBox="0 0 24 24"><circle cx="12" cy="10" r="7"/><path d="M9 10h6M12 7v6M10 17l2 4 2-4"/></svg><span>Padel</span></a>
+<a href="#health" data-sec="health"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.5-9-9a5 5 0 0 1 9-3 5 5 0 0 1 9 3c-2 4.5-9 9-9 9z"/></svg><span>Health</span></a>
+<a href="#golf" data-sec="golf"><svg viewBox="0 0 24 24"><path d="M5 21V3M5 4h12l-3 4 3 4H5"/></svg><span>Golf</span></a>
+<a href="#watch" data-sec="watch"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M10 9l5 3-5 3z"/></svg><span>Watch</span></a>
+<a href="#money" data-sec="money"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 6v12M15 9c0-1.5-1.5-2-3-2s-3 .8-3 2c0 3 6 1.5 6 4 0 1.2-1.5 2-3 2s-3-.5-3-2"/></svg><span>Money</span></a>
+<a href="#home" data-sec="home"><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7M5 10v10h14V10"/></svg><span>Home</span></a>
+</nav>
 <main>
+<header><h1>Life Dashboard</h1><div class="sub" id="today"></div><div class="sub">Data snapshot: October 24, 2026 unless noted. Logs save on this phone.</div></header>
+
+<section id="sec-overview" class="sec active">
 <div class="grid">
 <div class="card stat"><div class="v">Mon 6:45a</div><div class="l">Next padel · Juan vs Blake, Pietro</div></div>
 <div class="card stat"><div class="v">6h 55m</div><div class="l">Last sleep · 81.2% efficiency</div></div>
 <div class="card stat"><div class="v">~47 bpm</div><div class="l">Avg heart rate · Oct 18–24</div></div>
 <div class="card stat"><div class="v">11 days</div><div class="l">Grand Cayman · Nov 4–6</div></div>
 </div>
+<div class="card"><h2>Up next</h2>
+<div class="row"><span>Mon Oct 26 · 6:45a</span><span>Padel: Juan vs Blake, Pietro</span></div>
+<div class="row"><span>Mon Oct 26 · 6:15p</span><span>Sant Ambroeus · 6 guests</span></div>
+<div class="row"><span>Fri Oct 30 · 6:00p</span><span>Cafe Boulud · 4 guests</span></div>
+<div class="row"><span>Sun Nov 1</span><span>Maccabi regular pricing ends</span></div>
+</div>
+</section>
 
-<div class="grid" style="margin-top:12px">
-<div class="card half"><h2>This week</h2>
+<section id="sec-week" class="sec">
+<div class="card"><h2>This week</h2>
 <div class="row"><span>Mon Oct 26 · 6:45a</span><span>Padel: Juan vs Blake, Pietro</span></div>
 <div class="row"><span>Mon Oct 26 · 1:00p</span><span>Padel: Griff vs Russ, Anders</span></div>
 <div class="row"><span>Mon Oct 26 · 6:15p</span><span>Sant Ambroeus dinner</span></div>
@@ -50,31 +76,34 @@ table{width:100%;border-collapse:collapse;font-size:13px} th{text-align:left;col
 <div class="row"><span>Fri Oct 30 · 6:00p</span><span>Cafe Boulud</span></div>
 <div class="row"><span>Sat Oct 31</span><span>Halloween · Beginners (Big Book) NYC 10:30a</span></div>
 </div>
+</section>
 
-<div class="card half"><h2>Padel</h2>
+<section id="sec-dinners" class="sec">
+<div class="card"><h2>Upcoming dinners</h2>
+<div class="row"><span><b>Sant Ambroeus Palm Beach</b> · Mon Oct 26, 6:15 PM</span><span>6 guests · main dining room</span></div>
+<div class="mut">Free cancellation until Mon Oct 26, 2:15 PM — after that $75/person ($450 for the table) no-show fee. Note: the 2:15 PM deadline falls during your 1:00–2:30 PM padel game.</div>
+<div class="row" style="margin-top:10px"><span><b>Cafe Boulud Palm Beach</b> · Fri Oct 30, 6:00 PM</span><span>4 guests</span></div>
+<div class="mut">Free cancellation until 4:00 PM day-of; after that $50+tax per guest.</div>
+<div class="note">Resy + OpenTable sync in progress — this section will update from your accounts automatically once the reads land.</div>
+</div>
+</section>
+
+<section id="sec-padel" class="sec">
+<div class="card"><h2>Padel</h2>
 <div class="row"><span>Next</span><span>Mon 6:45a · Juan vs Blake, Pietro</span></div>
 <div class="row"><span>Last result</span><span>W 7-6, 7-5, 6-3 vs Russ, Steve (Oct 23)</span></div>
-<div style="margin-top:10px"><a href="https://dyacobs-tech.github.io/padel-log/">Open Padel Log →</a></div>
+<div style="margin-top:12px"><a href="https://dyacobs-tech.github.io/padel-log/">Open Padel Log →</a></div>
 <h3>Sick day counter</h3>
 <div id="sickTotals" class="mut"></div>
 <div style="display:flex;gap:8px;margin-top:8px"><input type="date" id="sickDate"><input type="text" id="sickNote" placeholder="Note (optional)"></div>
 <button onclick="addSick()" style="margin-top:8px">Log a sick day</button>
 <div id="sickList" style="margin-top:8px"></div>
 </div>
-</div>
+</section>
 
-<div class="grid" style="margin-top:12px">
-<div class="card"><h2>Upcoming dinners</h2>
-<div class="row"><span><b>Sant Ambroeus Palm Beach</b> · Mon Oct 26, 6:15 PM</span><span>6 guests · main dining room</span></div>
-<div class="mut">Free cancellation until Mon Oct 26, 2:15 PM — after that $75/person ($450 for the table) no-show fee. Note: the 2:15 PM deadline falls during your 1:00–2:30 PM padel game.</div>
-<div class="row" style="margin-top:8px"><span><b>Cafe Boulud Palm Beach</b> · Fri Oct 30, 6:00 PM</span><span>4 guests</span></div>
-<div class="mut">Free cancellation until 4:00 PM day-of; after that $50+tax per guest.</div>
-</div>
-</div>
-
-<div class="grid" style="margin-top:12px">
-<div class="card half"><h2>Health &amp; Sleep</h2><div class="mut">Apple Health nights. RHR &amp; HRV: <b>Not synced yet</b> — no rows in synced Health data. Wear the Apple Watch overnight or enable Eight Sleep's Health sharing. Eight Sleep web read unavailable — sleep history lives in the app only; API pull pending your go-ahead.</div>
-<table style="margin-top:8px"><tr><th>Night</th><th>Asleep</th><th>Eff.</th><th>Quality</th></tr>
+<section id="sec-health" class="sec">
+<div class="card"><h2>Health &amp; Sleep</h2><div class="mut">Apple Health nights. RHR &amp; HRV: <b>Not synced yet</b> — no rows in synced Health data. Wear the Apple Watch overnight or enable Eight Sleep's Health sharing. Eight Sleep web read unavailable — sleep history lives in the app only; API pull pending your go-ahead.</div>
+<table style="margin-top:10px"><tr><th>Night</th><th>Asleep</th><th>Eff.</th><th>Quality</th></tr>
 <tr><td>Oct 16→17</td><td>7h01m</td><td>84.1%</td><td>82</td></tr>
 <tr><td>Oct 17→18</td><td>8h42m</td><td>80.5%</td><td>82</td></tr>
 <tr><td>Oct 18→19</td><td>6h57m</td><td>90.4%</td><td>70</td></tr>
@@ -82,14 +111,16 @@ table{width:100%;border-collapse:collapse;font-size:13px} th{text-align:left;col
 <tr><td>Oct 20→21</td><td>5h32m</td><td>64.8%</td><td class="flag">30 · deep 20m</td></tr>
 <tr><td>Oct 22→23</td><td>7h23m</td><td>77.9%</td><td>82</td></tr>
 <tr><td>Oct 23→24</td><td>6h55m</td><td>81.2%</td><td>58</td></tr></table>
-<div class="mut" style="margin-top:8px">Daily Oct 18–24: heart rate avg 45–49 bpm · respiratory ~17/min · steps 3,890–15,188.</div>
+<div class="mut" style="margin-top:10px">Daily Oct 18–24: heart rate avg 45–49 bpm · respiratory ~17/min · steps 3,890–15,188.</div>
 </div>
+</section>
 
-<div class="card half"><h2>Golf</h2>
+<section id="sec-golf" class="sec">
+<div class="card"><h2>Golf</h2>
 <div class="row"><span>Handicap</span><span><b>4.1</b> (low 2.4, Apr 20, 2026) · revised Oct 23, 2026</span></div>
 <div class="row"><span>GHIN</span><span>6957117 · PBCC, Back tees play as 5</span></div>
 <div class="mut">Clubs: Hudson National (MGA), Palm Beach Country Club, Trump International (FSGA). No single home club labelled. Synced from GHIN Oct 24, 2026. 20-round avg 80.8 (high 87, low 74).</div>
-<table style="margin-top:8px"><tr><th>Date</th><th>Course</th><th>Score</th><th>Diff</th></tr>
+<table style="margin-top:10px"><tr><th>Date</th><th>Course</th><th>Score</th><th>Diff</th></tr>
 <tr><td>Oct 22</td><td>Congaree</td><td>*77A</td><td>3.4</td></tr>
 <tr><td>Oct 22</td><td>Congaree</td><td>84A</td><td>8.8</td></tr>
 <tr><td>Oct 17</td><td>Palm Beach CC</td><td>77H</td><td>6.6</td></tr>
@@ -110,15 +141,16 @@ table{width:100%;border-collapse:collapse;font-size:13px} th{text-align:left;col
 <tr><td>Jun 27</td><td>Hudson National</td><td>86H</td><td>8.6</td></tr>
 <tr><td>Jun 19</td><td>Old Oaks</td><td>84A</td><td>7.9</td></tr>
 <tr><td>Jun 6</td><td>Apogee WEST</td><td>80H</td><td>7.2</td></tr></table>
-<div class="mut" style="margin-top:6px">H = Home, A = Away, * as shown in GHIN.</div>
-<div style="display:flex;gap:8px;margin-top:8px"><input type="date" id="gDate"><input type="text" id="gCourse" placeholder="Course"><input type="number" id="gScore" placeholder="Score"></div>
+<div class="mut" style="margin-top:8px">H = Home, A = Away, * as shown in GHIN.</div>
+<h3>Log a round</h3>
+<div style="display:flex;gap:8px"><input type="date" id="gDate"><input type="text" id="gCourse" placeholder="Course"><input type="number" id="gScore" placeholder="Score"></div>
 <button onclick="addRound()" style="margin-top:8px">Log round</button>
 <div id="golfList" style="margin-top:8px"></div>
 </div>
-</div>
+</section>
 
-<div class="grid" style="margin-top:12px">
-<div class="card half"><h2>Watch hub</h2>
+<section id="sec-watch" class="sec">
+<div class="card"><h2>Watch hub</h2>
 <div class="mut">To watch · 39 titles in Movies to Watch. Letterboxd sync in progress (secure sign-in pending).</div>
 <h3>Newest to watch</h3>
 <div class="row"><span>War</span><span>HBO/Max</span></div>
@@ -129,8 +161,10 @@ table{width:100%;border-collapse:collapse;font-size:13px} th{text-align:left;col
 <button onclick="addWatched()" style="margin-top:8px">Mark watched</button>
 <div id="watchedList" style="margin-top:8px"></div>
 </div>
+</section>
 
-<div class="card half"><h2>Money watch</h2>
+<section id="sec-money" class="sec">
+<div class="card"><h2>Money watch</h2>
 <div class="row"><span>Viture refund</span><span>$563.39 · watch ~Oct 30</span></div>
 <div class="row"><span>WSJ renewal</span><span>Decide before Oct 27</span></div>
 <div class="row"><span>KREA renewal</span><span>Oct 2027</span></div>
@@ -141,9 +175,9 @@ table{width:100%;border-collapse:collapse;font-size:13px} th{text-align:left;col
 <div class="row"><span>Coloring book</span><span>KDP · ages 4–8 · $7.99 · pen name open</span></div>
 <div class="row"><span>Marbella</span><span>Aug 2027 family trip planning</span></div>
 </div>
-</div>
+</section>
 
-<div class="grid" style="margin-top:12px">
+<section id="sec-home" class="sec">
 <div class="card"><h2>Home · SmartThings + Pool</h2><div class="mut">Snapshot Oct 24, 2026 ~5:45pm. All thermostats online, mode cool, fan auto. Lutron lights are NOT in SmartThings (bridge offline) — ask Luna for lights.</div>
 <div class="row"><span>Master Bedroom</span><span>70°F · 50% · set 73°</span></div>
 <div class="row"><span>Living Room</span><span>72°F · 41% · set 74°</span></div>
@@ -155,10 +189,13 @@ table{width:100%;border-collapse:collapse;font-size:13px} th{text-align:left;col
 <div class="row"><span>Pool</span><span>91°F · pump on · heater on · air 83°F</span></div>
 <div class="note">Live controls aren't in this page — thermostat changes go through Luna for now. Tell Luna a room + temperature and she'll set it.</div>
 </div>
-</div>
+</section>
 </main>
 <script>
 document.getElementById('today').textContent = new Date().toLocaleDateString(undefined,{weekday:'long',month:'long',day:'numeric',year:'numeric'});
+function showSec(id){document.querySelectorAll('.sec').forEach(s=>s.classList.toggle('active',s.id==='sec-'+id));document.querySelectorAll('#rail a').forEach(a=>a.classList.toggle('active',a.dataset.sec===id))}
+document.querySelectorAll('#rail a').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();history.replaceState(null,'','#'+a.dataset.sec);showSec(a.dataset.sec)}));
+var start=(location.hash||'#overview').slice(1);if(!document.getElementById('sec-'+start))start='overview';showSec(start);
 function load(k){try{return JSON.parse(localStorage.getItem(k))||[]}catch(e){return[]}}
 function save(k,v){localStorage.setItem(k,JSON.stringify(v))}
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;')}
