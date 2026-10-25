@@ -211,7 +211,7 @@ function delWatched(i){var l=load('ld_watched');l.splice(i,1);save('ld_watched',
 document.getElementById('sickDate').value=new Date().toISOString().slice(0,10);
 document.getElementById('gDate').value=new Date().toISOString().slice(0,10);
 renderSick();renderGolf();renderWatched();
-if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js')}
+if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js');let refreshing=false;navigator.serviceWorker.addEventListener('controllerchange',()=>{if(!refreshing){refreshing=true;window.location.reload()}})}
 </script>
 </body>
 </html>
